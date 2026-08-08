@@ -25,7 +25,7 @@ def save_model(module):
 
 # 训练模型
 def main(self):
-    voc_dir = r"C:\Users\ming\tinyss\dataset_tfrecords"
+    voc_dir = r"dataset_tfrecords"
     train_dataset = VOCDataset(voc_dir)(batch_size=FLAGS.batch_size,
                                         repeats=FLAGS.num_epochs, is_train=True)
     val_dataset = VOCDataset(voc_dir)(batch_size=1, repeats=-1, is_train=False)
@@ -51,7 +51,7 @@ def main(self):
                 # 训练，记录前向传播信息
                 with tf.GradientTape() as tape:
                     logits = model(images)
-                    labels = tf.one_hot(tf.squeeze(labels, axis=-1), depth=FLAGS.num_classes)
+                    labels = tf.one_hot(labels, depth=FLAGS.num_classes)
                     if FLAGS.sanity_check:
                         with tf.control_dependencies([tf.assert_equal(tf.shape(logits), tf.shape(labels))]):
                             loss = tf.math.reduce_mean(
@@ -77,9 +77,9 @@ def main(self):
                             prediction = tf.equal(labels_val, logits_val)
                             accuracy = tf.reduce_mean(tf.cast(prediction, tf.float32))
 
-                        tf.print("iteration:", step, " accuracy - ", accu)          
+                        tf.print("iteration:", step, " accuracy - ", accuracy)          
                         tf.summary.scalar('accuracy', accuracy, step=step)
-
+                break
     loop()
     
     # 保存模型        

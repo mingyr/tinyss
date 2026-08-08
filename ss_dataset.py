@@ -21,7 +21,7 @@ class VOCDataset(snt.Module):
             example_parsed = tf.io.parse_single_example(example_proto, feature_description)
             image, label = example_parsed['image'], tf.cast(example_parsed['label'], tf.int32)
                  
-            return tf.reshape(image, self._img_dims+[3]), tf.reshape(label, self._img_dims+[1])
+            return tf.reshape(image, self._img_dims+[3]), tf.reshape(label, self._img_dims)
             
         ds = tf.data.TFRecordDataset(os.path.join(self._tfrec_dir, 
                                                   "voc-train.tfr" if is_train else "voc-val.tfr"))

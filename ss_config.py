@@ -18,7 +18,7 @@ flags.DEFINE_float("optimizer_epsilon", 1e-10, "Epsilon used for RMSProp optimiz
 
 flags.DEFINE_integer("num_epochs", 10, "Number of iterations to train for.")
 
-flags.DEFINE_integer('batch_size', 2, 'batch size for test')
+flags.DEFINE_integer('batch_size', 8, 'batch size for test')
 flags.DEFINE_integer('test_size', 100, 'batch size for test')
 
 flags.DEFINE_string('train_output_dir', 'output-train', 'directory for training output.')
