@@ -71,9 +71,9 @@ def main(self):
                 if step % FLAGS.report_interval == 0:
                     images_val, labels_val = next(val_dataset_iter)
                     logits_val = model(images_val)
-                    logits_val = tf.math.argmax(images_val, -1)
+                    logits_val = tf.math.argmax(logits_val, -1, output_type=tf.dtypes.int32)
                     if FLAGS.sanity_check:
-                        with tf.control_dependencies([tf.assert_equal(tf.shape(images_val), tf.shape(labels_val))]):
+                        with tf.control_dependencies([tf.assert_equal(tf.shape(logits_val), tf.shape(labels_val))]):
                             prediction = tf.equal(labels_val, logits_val)
                             accuracy = tf.reduce_mean(tf.cast(prediction, tf.float32))
 
