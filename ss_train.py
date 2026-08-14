@@ -28,11 +28,11 @@ def main(self):
     voc_dir = r"dataset_tfrecords"
     train_dataset = VOCDataset(voc_dir)(batch_size=FLAGS.batch_size,
                                         repeats=FLAGS.num_epochs, is_train=True)
-    val_dataset = VOCDataset(voc_dir)(batch_size=1, repeats=-1, is_train=False)
+    val_dataset = VOCDataset(voc_dir)(batch_size=4, repeats=-1, is_train=False)
     val_dataset_iter = iter(val_dataset)
     
     # 建立模型
-    model = Model(FLAGS.num_classes)
+    model = Model(FLAGS.num_classes, filters=[32, 64, 128])
 
     # 建立优化器
     optimizer = snt.optimizers.Adam(learning_rate=FLAGS.learning_rate, beta1=0.)
@@ -76,10 +76,12 @@ def main(self):
                         with tf.control_dependencies([tf.assert_equal(tf.shape(logits_val), tf.shape(labels_val))]):
                             prediction = tf.equal(labels_val, logits_val)
                             accuracy = tf.reduce_mean(tf.cast(prediction, tf.float32))
-
-                        tf.print("iteration:", step, " accuracy - ", accuracy)          
-                        tf.summary.scalar('accuracy', accuracy, step=step)
-                break
+                    else:
+                        prediction = tf.equal(labels_val, logits_val)
+                        accuracy = tf.reduce_mean(tf.cast(prediction, tf.float32))
+                    tf.print("iteration:", step, " accuracy - ", accuracy)          
+                    tf.summary.scalar('accuracy', accuracy, step=step)
+                # break
     loop()
     
     # 保存模型        

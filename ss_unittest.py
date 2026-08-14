@@ -87,15 +87,14 @@ def test_model2():
 
     # 2. Execute once to build the graph
     x = tf.random.normal((2, 240, 320, 3), dtype=tf.float32)
-    y = model(x)
+    model(x)
 
     # 3. Write graph directly from the concrete function
     summary_writer = tf.summary.create_file_writer(str(log_dir))
     with summary_writer.as_default():
         tf.summary.graph(model.get_concrete_function().graph)
 
-    print(f"Output shape: {y.shape}")    
 
 # test_image(r"C:\Users\ming\Downloads\VOCdevkit\VOC2012\SegmentationClass\2007_000032.png")
-test_ss_dataset(True)
-# test_model2()
+# test_ss_dataset(True)
+test_model2()
